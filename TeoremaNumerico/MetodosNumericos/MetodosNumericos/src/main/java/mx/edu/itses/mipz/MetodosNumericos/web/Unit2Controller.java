@@ -16,7 +16,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class Unit2Controller {
 
     @Autowired
-    private UnidadIIService bisectionservice;
+    private UnidadIIService unidadIIsrv;
+
+    @GetMapping("/unit2")
+    public String index(Model model) {
+        return "unit2/index";
+    }
 
     @GetMapping("unit2/formbisection")
     public String formBisection(Model model) {
@@ -32,8 +37,8 @@ public class Unit2Controller {
     public String solvebisection(Biseccion bisection, Model model) {
 
         //  double valorFX = Funciones.Ecuacion(bisection.getFX(), bisection.getXL());
-      //  log.info("Valor de FX: " + bisection.getFX());
-        var solveBisection = bisectionservice.AlgoritmoBiseccion(bisection);
+        //  log.info("Valor de FX: " + bisection.getFX());
+        var solveBisection = unidadIIsrv.AlgoritmoBiseccion(bisection);
 
         //log.info("Arreglo: " + solveBisection);
         model.addAttribute("solveBisection", solveBisection);

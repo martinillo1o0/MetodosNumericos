@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import mx.edu.itses.mipz.MetodosNumericos.domain.Biseccion;
 import mx.edu.itses.mipz.MetodosNumericos.domain.Biseccion;
 import mx.edu.itses.mipz.MetodosNumericos.domain.NewtonRaphson;
+import mx.edu.itses.mipz.MetodosNumericos.domain.Secante;
+import mx.edu.itses.mipz.MetodosNumericos.domain.SecanteModificado;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -62,45 +64,123 @@ public class UnidadIIServiceImpl implements UnidadIIService {
         return respuesta;
     }
 /////////////////////////////////////////////////////////////////////////////////////////////////
+
+ 
+
+    @Override
     public ArrayList<NewtonRaphson> AlgoritmoNewtonRaphson(NewtonRaphson newtonRaphson) {
-        ArrayList<NewtonRaphson> respuestaNewtonRhapson = new ArrayList<>();
-        double XI = newtonRaphson.getXI();
-        
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+/////////////////////////////////////////
+    @Override
+    public ArrayList<Secante> AlgoritmoSecante(Secante secante) {
+        ArrayList<Secante> resultado = new ArrayList<>();
+
+        double XI0 = secante.getXIAnterior();
+        System.out.println("Valor de XI-1 fue recibido: " + secante.getXIAnterior());
+
+        double XI1 = secante.getXI();
         double Ea = 100;
-        String FX = newtonRaphson.getFX();
+        int iteraciones = secante.getIteracionesMaximas();
+        double tolerancia = secante.getTolerancia();
+        String funcion = secante.getFuncion();
+/////////
+        for (int i = 1; i <= iteraciones; i++) {
+            double fX0 = Funciones.Ecuacion(funcion, XI0);
+            double fX1 = Funciones.Ecuacion(funcion, XI1);
 
-        for (int i = 1; i <= newtonRaphson.getIteracionesMaximas(); i++) {
-            double fXI = Funciones.Ecuacion(FX, XI);
-            double FDXi = Funciones.Derivada(FX, XI);
-
-            if (FDXi == 0) {
-                System.err.println("Error: Derivada es cero en XI = " + XI + ". No se puede continuar.");
+            if ((fX1 - fX0) == 0) {
                 break;
             }
-            double XR = XI - (FXi / FDXi);
 
-            if (i != 1) {
-                Ea = Funciones.ErrorRelativo(XR, XI);
+            double numerador = fX1 * (XI1 - XI0);
+            double denominador = fX1 - fX0;
+            double xr = XI1 - numerador / denominador;
+
+            if (i > 1) {
+                Ea = Funciones.ErrorRelativo(xr, XI1);
             }
 
-            NewtonRaphson renglon = new NewtonRaphson();
-            renglon.setXI(XI);
-            renglon.setFX(String.valueOf(FXi));
-            renglon.setFDX(String.valueOf(FDXi));
-            //renglon.setFDX(FDX);
-            //renglon.setFX(FX);
-            renglon.setXR(XR);
-            renglon.setEa(Ea);
+            Secante renglon = new Secante();
             renglon.setIteracion(i);
-            respuestaNewtonRhapson.add(renglon);
-            if (Ea <= newtonRaphson.getEa()) {
+            renglon.setXIAnterior(XI0);
+            renglon.setXI(XI1);
+            renglon.setFXAnterior(fX0);
+            renglon.setFX(fX1);
+            renglon.setXR(xr);
+            renglon.setEa(Ea);
+            renglon.setTolerancia(tolerancia);
+            renglon.getIteracionesMaximas();
+            renglon.setFuncion(funcion);
+
+            resultado.add(renglon);
+
+            if (Ea <= tolerancia) {
                 break;
             }
 
-            XI = XR;
+            XI0 = XI1;
+            XI1 = xr;
+        }
+        return resultado;
+    }
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+    @Override
+    public ArrayList<SecanteModificado> AlgoritmoSecanteModificado(SecanteModificado secantemodificado) {
+        ArrayList<SecanteModificado> resultado = new ArrayList<>();
+
+        double xi = secantemodificado.getXI();
+        double delta2 = secantemodificado.getDelta();
+        double Ea = 100;
+        int iteracionesMaximas = secantemodificado.getIteracionesMaximas();
+        double tolerancia = secantemodificado.getTolerancia();
+        String funcion = secantemodificado.getFuncion();
+
+        System.out.println("Valor XI inicial recibido: " + xi);
+        System.out.println("Valor de delta recibido: " + delta2);
+
+        for (int i = 1; i <= iteracionesMaximas; i++) {
+            double fxi = Funciones.Ecuacion(funcion, xi);
+            double fxiDelta = Funciones.Ecuacion(funcion, xi + delta2 * xi);
+
+            double denominador = (fxiDelta - fxi) / (delta2 * xi);
+
+            if (denominador == 0 || Double.isInfinite(fxi) || Double.isNaN(fxi)
+                    || Double.isInfinite(fxiDelta) || Double.isNaN(fxiDelta)) {
+                System.out.println("La diivisión por cero o valor de función inválidus. Se dentendran las iteraciones");
+                break;
+            }
+
+            double xr = xi - (fxi / denominador);
+
+            if (i > 1) {
+                Ea = Funciones.ErrorRelativo(xr, xi);
+            }
+
+            SecanteModificado renglon = new SecanteModificado();
+            renglon.setIteracion(i);
+            renglon.setXI(xi);
+            renglon.setXIAnterior(0.0);
+            renglon.setFX(fxi);
+            renglon.setFXAnterior(fxiDelta);
+            renglon.setXR(xr);
+            renglon.setEa(Ea);
+            renglon.setTolerancia(tolerancia);
+            renglon.setIteracionesMaximas(iteracionesMaximas);
+            renglon.setFuncion(funcion);
+            renglon.setDelta(delta2);
+
+            resultado.add(renglon);
+
+            if (Ea <= tolerancia) {
+                break;
+            }
+
+            xi = xr;
         }
 
-        return respuestaNewtonRhapson;
+        return resultado;
+
     }
 
 }
