@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymleaf.org">
+    <head>
+        <title>Layout metodos numericos</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+
+    <!-- Cuerpo cuerpaso -->
+    <body>
+        <nav class="navbar navbar-expand-lg bg-body-tertiary" th:fragment="menu">
+            <div class="container-brand">
+                <a class="navbar-brand" href="/">
+
+                    <img th:src="@{/images/logo.itses.png}"
+                         width="125" height="38"
+                         class="d-inline-block align-top">
+                    METODOS NUMERICOS
+                </a>
+            </div>
+
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <a class="nav-link active" aria-current="page" href="/">inicio</a>
+                    <a class="nav-link" href="/unit2">Solucion Ecuaciones</a>
+                    <a class="nav-link disabled" href="/unit3">Sistemas Lineales</a>
+                    <a class="nav-link disabled" href="/unit4">Ajuste de curvas</a>
+                    <a class="nav-link disabled" href="/unit5">Diferenciacion e Integracion</a>
+                    <a class="nav-link disabled" href="/unit6">Ecuaciones diferenciales</a>
+                    <a class="nav-link disabled" href="/unit7">Regla de Cramers</a>
+                    <a class="nav-link disabled" href="/unit8">Eliminacion Gaussiana</a>
+                </div>
+            </div>
+
+        </nav>
+        <div class="container"th:fragment="bannerunit2"> 
+
+            <div class="row">
+                <img class="img-fluid w-100"th:src="@{/images/metodosnumericos.png}"/>
+            </div>
+        </div>
+
+  <div class="container"th:fragment="bannerunit3"> 
+
+            <div class="row">
+                <img class="img-fluid w-100"th:src="@{/images/metodosnumericos.png}"/>
+            </div>
+        </div>
+
+    </body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</html>
