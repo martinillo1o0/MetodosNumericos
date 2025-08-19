@@ -60,15 +60,15 @@
             resolver.style.display = 'block';
         }
     </script>
-   <body>
-    <div class="container">
+    <body>
+       <div class="container">
         <nav th:replace="/layout/template :: menu"> </nav>
         <div th:replace="/layout/template :: bannerunit3"></div>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/">Inicio</a></li>
                 <li class="breadcrumb-item"><a href="unit3/">Sistemas Lineales</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Formulario Gauss-Jordan</li>
+                <li class="breadcrumb-item active" aria-current="page">Gauss Jordan</li>
             </ol>
         </nav>
 
@@ -76,41 +76,40 @@
             <div class="container">
                 <h1 class="text">Método Directo: Gauss-Jordan</h1>
                 <h3 class="text">Ingresa los parámetros siguientes</h3>
-                <div class="row">
-                    <div class="col-md-3">
-                        <label for="MN" class="form-label"># Dimensión de la Matriz Cuadrada</label>
-                        <input type="text" class="form-control" id="MN" name="MN">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4">
-                        <br>
-                        <button type="button" class="btn btn-secondary" onclick="crearMatriz()">Crear Matriz</button>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="Contenedor text-center">
-                        <div class="row align-items-start">
-                            <div class="col">
-                                <p>MATRIZ A</p>
-                                <div id="ContenedorMatriz"></div> 
-                            </div>
-                            <div class="col-2">
-                                <p>Vector B</p>
-                                <div id="ContenedorB"></div>
-                            </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label for="MN" class="form-label"># Dimensión de la Matriz Cuadrada</label>
+                            <input type="text" class="form-control" id="MN" name="MN">
                         </div>
                     </div>
-                    <div id="resolver" class=" p-2 row" style="display: none">
-                        <div class="col-12">
+                    <div class="row">
+                        <div class="col-md-4">
                             <br>
-                            <button type="submit" class="btn btn-primary">Resolver Sistema</button>
+                            <button type="button" class="btn btn-secondary" onclick="crearMatriz()">Crear Matriz</button>
                         </div>
-                    </div>                       
+                    </div>
+                    <div class="row">
+                        <div class="Contenedor text-center">
+                            <div class="row align-items-start">
+                                <div class="col">
+                                    <p>MATRIZ A</p>
+                                    <div id="ContenedorMatriz"></div> 
+                                </div>
+                                <div class="col-2">
+                                    <p>Vector B</p>
+                                    <div id="ContenedorB"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="resolver" class=" p-2 row" style="display: none">
+                            <div class="col-12">
+                                <br>
+                                <button type="submit" class="btn btn-primary">Resolver Sistema</button>
+                            </div>
+                        </div>                       
+                    </div>
                 </div>
-            </div>
-        </form> 
-    </div>
-</body>
-
-</html>
+            </form> 
+        </div>
+    </body>
+</html>s

@@ -3,6 +3,7 @@ package mx.edu.itses.mipz.MetodosNumericos.web;
 import java.util.ArrayList;
 import lombok.extern.slf4j.Slf4j;
 import mx.edu.itses.mipz.MetodosNumericos.domain.EliminacionGaussiana;
+import mx.edu.itses.mipz.MetodosNumericos.domain.GaussJordan;
 import mx.edu.itses.mipz.MetodosNumericos.domain.ReglaCramer;
 import mx.edu.itses.mipz.MetodosNumericos.services.UnidadIIIService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,7 @@ public class Unit3Controller {
 
         return "unit3/reglacramer/solvecramer";
     }
-    ////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     
     
@@ -61,7 +62,24 @@ public class Unit3Controller {
         model.addAttribute("solveElimGauss", solveElimGauss);
         return "unit3/eliminaciongaussiana/solvegauss";
     }
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     
+    @GetMapping("/unit3/formgaussjordan")
+public String formGaussJordan(Model model) {
+    GaussJordan modelGaussJordan = new GaussJordan();
+    model.addAttribute("modelGaussJordan", modelGaussJordan);
+    return "unit3/gaussjordan/formgaussjordan";
+}
+
+@PostMapping("/unit3/solvegaussjordan")
+public String solveGaussJordan(GaussJordan modelGaussJordan, Errors errores, Model model) {
+  
+    var solveGaussJordan = unidadIIIsrv.AlgoritmoGaussJordan(modelGaussJordan);
+
+    model.addAttribute("solveGaussJordan", solveGaussJordan);
+    return "unit3/gaussjordan/solvegaussjordan";
+}
     
     
     

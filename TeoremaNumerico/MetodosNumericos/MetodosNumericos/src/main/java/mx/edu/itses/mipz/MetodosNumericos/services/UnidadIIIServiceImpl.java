@@ -3,6 +3,7 @@ package mx.edu.itses.mipz.MetodosNumericos.services;
 import java.util.ArrayList;
 import lombok.extern.slf4j.Slf4j;
 import mx.edu.itses.mipz.MetodosNumericos.domain.EliminacionGaussiana;
+import mx.edu.itses.mipz.MetodosNumericos.domain.GaussJordan;
 import mx.edu.itses.mipz.MetodosNumericos.domain.ReglaCramer;
 import org.springframework.stereotype.Service;
 
@@ -253,6 +254,57 @@ public class UnidadIIIServiceImpl implements UnidadIIIService {
             sb.append(" = ").append(String.format("%.4f", resultados[i])).append("\n");
         }
         return sb.toString();
+    }
+////////////////////////////////////////////////////////////////////////////////////////////
+    
+    
+    
+    @Override
+    public GaussJordan AlgoritmoGaussJordan(GaussJordan modelGaussJordan) {
+    int n = modelGaussJordan.getMN();
+    ArrayList<Double> Aflat = modelGaussJordan.getMatrizA();
+    ArrayList<Double> bflat = modelGaussJordan.getVectorB();
+    ArrayList<Double> vectorX = new ArrayList<>();
+
+
+    double[][] matriz = new double[n][n + 1]; 
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            matriz[i][j] = Aflat.get(i * n + j);
+        }
+        matriz[i][n] = bflat.get(i);
+    }
+
+
+    for (int i = 0; i < n; i++) {
+
+        double pivot = matriz[i][i];
+        if (pivot == 0) {
+            throw new ArithmeticException("Pivot cero, sistema singular o requiere intercambio de filas");
+        }
+    
+        for (int j = 0; j <= n; j++) {
+            matriz[i][j] /= pivot;
+        }
+     
+        for (int k = 0; k < n; k++) {
+            if (k != i) {
+                double factor = matriz[k][i];
+                for (int j = 0; j <= n; j++) {
+                    matriz[k][j] -= factor * matriz[i][j];
+                }
+            }
+        }
+    }
+
+    
+    for (int i = 0; i < n; i++) {
+        vectorX.add(matriz[i][n]);
+    }
+
+    modelGaussJordan.setVectorX(vectorX);
+    return modelGaussJordan;
+       
     }
       
 
