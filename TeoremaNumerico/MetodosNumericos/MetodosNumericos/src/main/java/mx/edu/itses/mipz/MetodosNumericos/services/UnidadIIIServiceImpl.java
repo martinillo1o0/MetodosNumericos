@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import lombok.extern.slf4j.Slf4j;
 import mx.edu.itses.mipz.MetodosNumericos.domain.EliminacionGaussiana;
 import mx.edu.itses.mipz.MetodosNumericos.domain.GaussJordan;
+import mx.edu.itses.mipz.MetodosNumericos.domain.GaussSeidel;
+import mx.edu.itses.mipz.MetodosNumericos.domain.Jacobi;
 import mx.edu.itses.mipz.MetodosNumericos.domain.ReglaCramer;
 import org.springframework.stereotype.Service;
 
@@ -103,8 +105,6 @@ public class UnidadIIIServiceImpl implements UnidadIIIService {
             }
             case 4 -> {
 
-                
-                
             }
 
         }
@@ -123,15 +123,13 @@ public class UnidadIIIServiceImpl implements UnidadIIIService {
                 - m[0][1] * (m[1][0] * m[2][2] - m[1][2] * m[2][0])
                 + m[0][2] * (m[1][0] * m[2][1] - m[1][1] * m[2][0]);
     }
-    
-    
+
 ////////////////////////////////////////////////////////
     @Override
     public EliminacionGaussiana AlgoritmoElimGaussiana(EliminacionGaussiana modelElimGaussiana) {
         ArrayList<String> pasos = new ArrayList<>();
         ArrayList<Double> vectorX = new ArrayList<>();
 
-        
         ArrayList<Double> A = modelElimGaussiana.getMatrizA();
         ArrayList<Double> b = modelElimGaussiana.getVectorB();
         int n = modelElimGaussiana.getMN();
@@ -154,24 +152,21 @@ public class UnidadIIIServiceImpl implements UnidadIIIService {
         pasos.add(formatearSistemaGauss(matriz, resultados, n));
 
         try {
-            
+
             for (int i = 0; i < n - 1; i++) {
                 // Buscar el pivote máximo
                 int filaPivote = buscarPivoteMaximo(matriz, i, n);
 
-            
                 if (filaPivote != i) {
                     intercambiarFilas(matriz, resultados, i, filaPivote);
                     pasos.add("Intercambio de fila " + (i + 1) + " con fila " + (filaPivote + 1));
                     pasos.add(formatearSistemaGauss(matriz, resultados, n));
                 }
 
-             
                 if (Math.abs(matriz[i][i]) < 1e-10) {
                     throw new ArithmeticException("El sistema no tiene solución única");
                 }
 
-            
                 for (int j = i + 1; j < n; j++) {
                     if (Math.abs(matriz[j][i]) > 1e-10) {
                         double factor = matriz[j][i] / matriz[i][i];
@@ -189,7 +184,6 @@ public class UnidadIIIServiceImpl implements UnidadIIIService {
                 }
             }
 
-           
             double[] solucion = new double[n];
             pasos.add("Sustitución hacia atrás:");
 
@@ -256,56 +250,179 @@ public class UnidadIIIServiceImpl implements UnidadIIIService {
         return sb.toString();
     }
 ////////////////////////////////////////////////////////////////////////////////////////////
-    
-    
-    
+
     @Override
     public GaussJordan AlgoritmoGaussJordan(GaussJordan modelGaussJordan) {
-    int n = modelGaussJordan.getMN();
-    ArrayList<Double> Aflat = modelGaussJordan.getMatrizA();
-    ArrayList<Double> bflat = modelGaussJordan.getVectorB();
-    ArrayList<Double> vectorX = new ArrayList<>();
+        int n = modelGaussJordan.getMN();
+        ArrayList<Double> Aflat = modelGaussJordan.getMatrizA();
+        ArrayList<Double> bflat = modelGaussJordan.getVectorB();
+        ArrayList<Double> vectorX = new ArrayList<>();
 
-
-    double[][] matriz = new double[n][n + 1]; 
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            matriz[i][j] = Aflat.get(i * n + j);
+        double[][] matriz = new double[n][n + 1];
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                matriz[i][j] = Aflat.get(i * n + j);
+            }
+            matriz[i][n] = bflat.get(i);
         }
-        matriz[i][n] = bflat.get(i);
-    }
 
+        for (int i = 0; i < n; i++) {
 
-    for (int i = 0; i < n; i++) {
+            double pivot = matriz[i][i];
+            if (pivot == 0) {
+                throw new ArithmeticException("Pivot cero, sistema singular o requiere intercambio de filas");
+            }
 
-        double pivot = matriz[i][i];
-        if (pivot == 0) {
-            throw new ArithmeticException("Pivot cero, sistema singular o requiere intercambio de filas");
-        }
-    
-        for (int j = 0; j <= n; j++) {
-            matriz[i][j] /= pivot;
-        }
-     
-        for (int k = 0; k < n; k++) {
-            if (k != i) {
-                double factor = matriz[k][i];
-                for (int j = 0; j <= n; j++) {
-                    matriz[k][j] -= factor * matriz[i][j];
+            for (int j = 0; j <= n; j++) {
+                matriz[i][j] /= pivot;
+            }
+
+            for (int k = 0; k < n; k++) {
+                if (k != i) {
+                    double factor = matriz[k][i];
+                    for (int j = 0; j <= n; j++) {
+                        matriz[k][j] -= factor * matriz[i][j];
+                    }
                 }
             }
         }
+
+        for (int i = 0; i < n; i++) {
+            vectorX.add(matriz[i][n]);
+        }
+
+        modelGaussJordan.setVectorX(vectorX);
+        return modelGaussJordan;
+
+    }
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    @Override
+    public Jacobi AlgoritmoJacobi(Jacobi modelJacobi) {
+        int n = modelJacobi.getMN();
+        ArrayList<Double> A = modelJacobi.getMatrizA();
+        ArrayList<Double> B = modelJacobi.getVectorB();
+        ArrayList<Double> X = new ArrayList<>();
+        ArrayList<Double> Xprev = new ArrayList<>();
+        ArrayList<Double> errores = new ArrayList<>();
+
+        // Inicializar vectores con ceros
+        for (int i = 0; i < n; i++) {
+            X.add(0.0);
+            Xprev.add(0.0);
+        }
+
+        double error = 100;
+        int iter = 0;
+
+        while (error > modelJacobi.getEa() && iter < modelJacobi.getIteracionesMaximas()) {
+            iter++;
+            for (int i = 0; i < n; i++) {
+                double suma = 0;
+                for (int j = 0; j < n; j++) {
+                    if (i != j) {
+                        suma += A.get(i * n + j) * Xprev.get(j);
+                    }
+                }
+                X.set(i, (B.get(i) - suma) / A.get(i * n + i));
+            }
+
+            // Calcular error máximo
+            error = 0;
+            for (int i = 0; i < n; i++) {
+                double e = Math.abs((X.get(i) - Xprev.get(i)) / X.get(i)) * 100;
+                if (e > error) {
+                    error = e;
+                }
+            }
+
+            errores.add(error);
+            // Actualizar Xprev
+            for (int i = 0; i < n; i++) {
+                Xprev.set(i, X.get(i));
+            }
+        }
+
+        modelJacobi.setVectorX(X);
+        modelJacobi.setVectorXPrev(Xprev);
+        modelJacobi.setErrores(errores);
+
+        return modelJacobi;
+
     }
 
+    ////////////////////////////////////////////////////////////////////////////
+    @Override
+    public GaussSeidel AlgoritmoGaussSeidel(GaussSeidel modelGaussSeidel) {
+
+        int MN = modelGaussSeidel.getMN();
+        ArrayList<Double> A = modelGaussSeidel.getMatrizA();
+        ArrayList<Double> b = modelGaussSeidel.getVectorB();
+        ArrayList<Double> X = new ArrayList<>();
+
+        // Inicializamos X con ceros
+        for (int i = 0; i < MN; i++) {
+            X.add(0.0);
+        }
+
+        int maxIter = 25;
+        double tol = 1e-6;
+
+        for (int iter = 0; iter < maxIter; iter++) {
+            ArrayList<Double> Xnueva = new ArrayList<>(X);
+            for (int i = 0; i < MN; i++) {
+                double suma = 0.0;
+                for (int j = 0; j < MN; j++) {
+                    if (j != i) {
+                        suma += A.get(i * MN + j) * Xnueva.get(j);
+                    }
+                }
+                double nuevo = (b.get(i) - suma) / A.get(i * MN + i);
+                Xnueva.set(i, nuevo);
+            }
+
+            // Verificar convergencia
+            boolean convergencia = true;
+            for (int i = 0; i < MN; i++) {
+                if (Math.abs(Xnueva.get(i) - X.get(i)) > tol) {
+                    convergencia = false;
+                    break;
+                }
+            }
+
+            X = Xnueva;
+            if (convergencia) {
+                break;
+            }
+        }
+
+        modelGaussSeidel.setVectorX(X);
+        return modelGaussSeidel;
+
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
     
-    for (int i = 0; i < n; i++) {
-        vectorX.add(matriz[i][n]);
-    }
-
-    modelGaussJordan.setVectorX(vectorX);
-    return modelGaussJordan;
-       
-    }
-      
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
 }
