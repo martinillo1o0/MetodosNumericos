@@ -1,80 +1,56 @@
 <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Newton-Raphson</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <nav th:replace="/layout/template :: menu"></nav>
+    <div th:replace="/layout/template :: bannerunit2"></div>
 
-<html xmlns:th="http://www.thymleaf.org">
-  <head>
-    <title>METODOS NUMERICOS</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstrap CSS -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-      integrity=""
-      crossorigin="anonymous"
-    >
-    <!-- Bootstrap JS and dependencies -->
-    <script 
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
-      integrity="" 
-      crossorigin="anonymous"
-    ></script>
-  </head>
-  <body>
-
-   <nav class="navbar navbar-light bg-light">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="/">
-
-                    <img th:src="@{/images/logo.itses.png}"
-                         width="125" height="38"
-                         class="d-inline-block align-top">
-                    METODOS NUMERICOS
-
-                </a>
-            </div>
-        </div>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item"><a href="/unit2">Ecuaciones Algebraicas</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Formulario Newton-Raphson</li>
+        </ol>
     </nav>
-    <div class="container">
-      <div class="row">
-        <img class="img-fluid w-100" th:src="@{/images/metodosnumericos.png}"/>
-      </div>
-    </div>
 
-    <form  method="post" th:object="${NewtonRaphson}" th:action="@{/unit2/solvebisection}">
-      <div class="container">
-        <h1>Biseccion</h1>
+    <h2>Método de Newton-Raphson</h2>
 
+    <form th:action="@{/unit2/solvenewtonrapshon}" th:object="${newtonRaphson}" method="post">
         <div class="mb-3">
-          <label for="FX" class="form-label">Ingresa ecuacion</label>
-          <input type="text" class="form-control" id="FX" placeholder="Ecuacion" th:field="*{FX}">
+            <label for="xi" class="form-label">Valor Inicial XI:</label>
+            <input type="text" class="form-control" id="xi" th:field="*{XI}">
         </div>
 
         <div class="mb-3">
-          <label for="XL" class="form-label">Valor inferior (XL)</label>
-          <input type="text" class="form-control" id="XL" placeholder="XL" th:field="*{XL}">
-        </div>
-
-         <div class="mb-3">
-          <label for="XU" class="form-label">Valor superior (XU)</label>
-          <input type="text" class="form-control" id="XU" placeholder="XU" th:field="*{XU}">
-        </div>
-        
-        <div class="mb-3">
-          <label for="Ea" class="form-label">Error Estimado (Ea)</label>
-          <input type="text" class="form-control" id="Ea" placeholder="Error Estimado" th:field="*{Ea}">
+            <label for="fx" class="form-label">Función F(X):</label>
+            <input type="text" class="form-control" id="fx" th:field="*{FX}">
         </div>
 
         <div class="mb-3">
-          <label for="IteracionesMaximas" class="form-label">Iteraciones máximas</label>
-          <input type="text" class="form-control" id="IteracionesMaximas" placeholder="Iteraciones" th:field="*{IteracionesMaximas}">
+            <label for="fdx" class="form-label">Derivada F'(X):</label>
+            <input type="text" class="form-control" id="fdx" th:field="*{FDX}">
         </div>
 
-        <div class="d-flex gap-3">
-          <button type="submit" class="btn btn-primary">Calcular</button>
-          <button type="reset" class="btn btn-secondary">Limpiar</button>
+        <div class="mb-3">
+            <label for="ea" class="form-label">Error Estimado (%):</label>
+            <input type="text" class="form-control" id="ea" th:field="*{Ea}">
         </div>
-      </div>
+
+        <div class="mb-3">
+            <label for="iteracionesMaximas" class="form-label">Iteraciones Máximas:</label>
+            <input type="text" class="form-control" id="iteracionesMaximas" th:field="*{iteracionesMaximas}">
+        </div>
+
+        <button type="submit" class="btn btn-success">Calcular</button>
+        <a href="/" class="btn btn-secondary ms-2">Cancelar</a>
     </form>
-
-  </body>
+</div>
+</body>
 </html>
+

@@ -6,12 +6,11 @@ import lombok.Data;
 public class NewtonRaphson {
 
     private int iteracion;
-    private String FX;
     private double XI;
-    private double fX;
-    private double fDX;//Xi+1
+    private String FX;
+    private String FDX;
     private double Ea;
-    private int IteracionesMaximas;
-    
-    
+    public double XR;
+    private int iteracionesMaximas;
+
 }

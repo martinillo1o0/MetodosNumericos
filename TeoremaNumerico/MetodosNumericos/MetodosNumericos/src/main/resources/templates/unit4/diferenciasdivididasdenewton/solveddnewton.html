@@ -1,63 +1,42 @@
 <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Resultados Diferencias Divididas de Newton</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <nav th:replace="/layout/template :: menu"></nav>
+    <div th:replace="/layout/template :: bannerunit2"></div>
 
-<html xmlns:th="http://www.thymleaf.org">
-    <head>
-        <title>METODOS NUMERICOS</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <!-- Bootstrap CSS -->
-        <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-            integrity=""
-            crossorigin="anonymous"
-            >
-        <!-- Bootstrap JS and dependencies -->
-        <script 
-            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
-            integrity="" 
-            crossorigin="anonymous"
-        ></script>
-    </head>
-    <body>
-        <nav class="navbar navbar-light bg-light">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="/">
+    <h2>Resultados - Diferencias Divididas de Newton</h2>
 
-                    <img th:src="@{/images/logo.itses.png}"
-                         width="125" height="38"
-                         class="d-inline-block align-top">
-                    METODOS NUMERICOS
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th># Iteración</th>
+                <th>Valores X</th>
+                <th>Valores Y</th>
+                <th>XR</th>
+                <th>Error Aproximado (%)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="solve, iterStat : ${solveDDNewton}">
+                <td th:text="${iterStat.index + 1}"></td>
+                <td th:text="${#strings.arrayJoin(solve.X, ', ')}"></td>
+                <td th:text="${#strings.arrayJoin(solve.Y, ', ')}"></td>
+                <td th:text="${solve.XR}"></td>
+                <td th:text="${solve.Ea}"></td>
+            </tr>
+        </tbody>
+    </table>
 
-                </a>
-            </div>
-        </div>
-    </nav>
-
-    <div class="container">
-        <div class="row">
-            <img class="img-fluid w-100" th:src="@{/images/metodosnumericos.png}"/>
-        </div>
+    <div class="text-center mt-4">
+        <a href="/unit4/formddnewton" class="btn btn-primary">Volver al Formulario</a>
+        <a href="/" class="btn btn-secondary ms-2">Inicio</a>
     </div>
-    <br>
-    <h2>Tabla de registro</h2>
-    <div class="container">
-        <table>
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>XR</th>
-                    <th>Error</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="solve,iter:${solveDDNewton}">
-                    <td th:text="${iter.index}"></td>
-                    <td th:text="${solve.XR}"></td>
-                    <td th:text="${solve.Ea}"></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+</div>
 </body>
 </html>

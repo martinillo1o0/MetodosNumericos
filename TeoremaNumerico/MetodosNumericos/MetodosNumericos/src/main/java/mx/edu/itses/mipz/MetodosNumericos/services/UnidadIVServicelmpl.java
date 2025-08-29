@@ -2,59 +2,44 @@
 package mx.edu.itses.mipz.MetodosNumericos.services;
 
 import java.util.ArrayList;
+import lombok.extern.slf4j.Slf4j;
 import mx.edu.itses.mipz.MetodosNumericos.domain.DDNewton;
 
 import mx.edu.itses.mipz.MetodosNumericos.domain.Lagrange;
+import mx.edu.itses.mipz.MetodosNumericos.services.UnidadIVService;
+import org.springframework.stereotype.Service;
 
 
+@Service
+@Slf4j
+public class UnidadIVServicelmpl implements UnidadIVService{
+     @Override
+ 
+    public Lagrange algoritmoLagrange(Lagrange modelLagrange) {
+        int n = modelLagrange.getN();
+        ArrayList<Double> x = modelLagrange.getXPoints();
+        ArrayList<Double> y = modelLagrange.getYPoints();
+        ArrayList<Double> result = new ArrayList<>();
 
-/**
- *
- * @author marti
- */
-public class UnidadIVServicelmpl {
-    
- public ArrayList<Lagrange> AlgoritmoLagrange(Lagrange lagrange) {
-        ArrayList<Lagrange> respuesta = new ArrayList<>();
-        int n = lagrange.getX().length; // número de puntos
-        double xr = 0;
-        double ea = 100;
-
-        for (int iter = 0; iter < lagrange.getIteracionesMaximas(); iter++) {
-            double numerador, denominador;
-            xr = 0;
-            for (int i = 0; i < n; i++) {
-                numerador = lagrange.getY()[i];
-                denominador = 1;
-                for (int j = 0; j < n; j++) {
-                    if (i != j) {
-                        denominador *= (lagrange.getX()[i] - lagrange.getX()[j]);
+        // Evaluar el polinomio en cada x (opcional, también puedes retornar coeficientes)
+        for (int i = 0; i < n; i++) {
+            double yi = 0;
+            for (int j = 0; j < n; j++) {
+                double term = y.get(j);
+                for (int k = 0; k < n; k++) {
+                    if (k != j) {
+                        term *= (x.get(i) - x.get(k)) / (x.get(j) - x.get(k));
                     }
                 }
-                xr += numerador / denominador; // suma término de Lagrange
+                yi += term;
             }
-
-            // Error relativo aproximado
-            if (iter != 0) {
-                ea = Math.abs((xr - lagrange.getXR()) / xr) * 100;
-            }
-
-            lagrange.setXR(xr);
-            lagrange.setEa(ea);
-
-            // Guardamos cada iteración
-            Lagrange renglon = new Lagrange();
-            renglon.setX(lagrange.getX());
-            renglon.setY(lagrange.getY());
-            renglon.setXR(xr);
-            renglon.setEa(ea);
-            respuesta.add(renglon);
-
-            if (ea <= lagrange.getEa()) break;
+            result.add(yi);
         }
 
-        return respuesta;
+        modelLagrange.setResult(result);
+        return modelLagrange;
     }
+
 
 /////////////////////////////////////////////////////////////////////////////////
     

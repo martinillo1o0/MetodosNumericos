@@ -1,65 +1,42 @@
 <!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Resultados Polinomio de Lagrange</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <nav th:replace="/layout/template :: menu"></nav>
+    <div th:replace="/layout/template :: bannerunit2"></div>
 
-<html xmlns:th="http://www.thymleaf.org">
-    <head>
-        <title>METODOS NUMERICOS</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <!-- Bootstrap CSS -->
-        <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-            integrity=""
-            crossorigin="anonymous"
-            >
-        <!-- Bootstrap JS and dependencies -->
-        <script 
-            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" 
-            integrity="" 
-            crossorigin="anonymous"
-        ></script>
-    </head>
-    <body>
-        <nav class="navbar navbar-light bg-light">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="/">
-
-                    <img th:src="@{/images/logo.itses.png}"
-                         width="125" height="38"
-                         class="d-inline-block align-top">
-                    METODOS NUMERICOS
-
-                </a>
-            </div>
-        </div>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+            <li class="breadcrumb-item"><a href="/unit4">Interpolación</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Resultados Lagrange</li>
+        </ol>
     </nav>
-        
 
-     <div class="container">
-      <div class="row">
-        <img class="img-fluid w-100" th:src="@{/images/metodosnumericos.png}"/>
-      </div>
+    <h2>Resultados del Polinomio de Lagrange</h2>
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>i</th>
+                <th>Valor P(Xi)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="val, iterStat : ${solveLagrange.result}">
+                <td th:text="${iterStat.index + 1}"></td>
+                <td th:text="${val}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="text-center mt-4">
+        <a href="/" class="btn btn-primary">Volver al Inicio</a>
     </div>
-        <br>
-          <h2>Tabla de registro</h2>
-        <div class="container">
-           <table>
-    <thead>
-        <tr>
-            <th>#</th>
-            <th>XR</th>
-            <th>Error</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr th:each="solve,iter:${solveLagrange}">
-            <td th:text="${iter.index}"></td>
-            <td th:text="${solve.XR}"></td>
-            <td th:text="${solve.Ea}"></td>
-        </tr>
-    </tbody>
-</table>
-
-        </div>
+</div>
 </body>
 </html>

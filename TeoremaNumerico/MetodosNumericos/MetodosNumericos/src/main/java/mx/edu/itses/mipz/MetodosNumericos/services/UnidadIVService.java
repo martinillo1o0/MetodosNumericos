@@ -11,7 +11,7 @@ import mx.edu.itses.mipz.MetodosNumericos.domain.Lagrange;
  */
 public interface UnidadIVService {
 
-    public ArrayList<Lagrange> AlgoritmoLagrange(Lagrange lagrange);
+    Lagrange algoritmoLagrange(Lagrange modelLagrange);
 
     public ArrayList<DDNewton> AlgoritmoDDNewton(DDNewton ddNewton);
 }
