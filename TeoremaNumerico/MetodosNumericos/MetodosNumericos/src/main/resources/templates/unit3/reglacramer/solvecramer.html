@@ -59,107 +59,110 @@
         }
     </script>
     <body>
-    <div class="container">
-        <nav th:replace="/layout/template :: menu"> </nav>
-        <div th:replace="/layout/template :: bannerunit3"></div>
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/">Inicio</a></li>
-                <li class="breadcrumb-item"><a href="/unit3">Sistemas Lineales</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Formulario Gauss-Jordan</li>
-            </ol>
-        </nav>
-        <br>
         <div class="container">
-            <h1 class="text">Método Directo: Gauss-Jordan</h1>
+            <nav th:replace="/layout/template :: menu"> </nav>
+            <div th:replace="/layout/template :: bannerunit3"></div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Inicio</a></li>
+                    <li class="breadcrumb-item"><a href="/unit3">Sistemas Lineales</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Formulario Gauss-Jordan</li>
+                </ol>
+            </nav>
+            <br>
+            <div class="container">
+                <h1 class="text">Método Directo: Gauss-Jordan</h1>
 
-            <div class="row justify-content-start">
-                <div class="col-4">
-                    <p class="text">Tamaño del Sistema</p>
+                <div class="row justify-content-start">
+                    <div class="col-4">
+                        <p class="text">Tamaño del Sistema</p>
+                    </div>
+                    <div class="col-4">
+                        <p th:text="${solveGaussJordan.MN}">MN</p>
+                    </div>
                 </div>
-                <div class="col-4">
-                    <p th:text="${solveGaussJordan.MN}">MN</p>
+
+                <div class="row">
+                    <div class="container text-center">
+
+                        <!-- Para MN=2 -->
+                        <div class="col" th:if="${solveGaussJordan.MN}==2">
+                            <div class="row align-items-start">
+                                <div class="col">
+                                    <p>MATRIZ A</p>
+                                    <div class="row align-items-start">
+                                        <div class="col"><p th:text="${solveGaussJordan.matrizA[0]}"></p></div>
+                                        <div class="col"><p th:text="${solveGaussJordan.matrizA[1]}"></p></div>
+                                    </div>
+                                    <div class="row align-items-start">
+                                        <div class="col"><p th:text="${solveGaussJordan.matrizA[2]}"></p></div>
+                                        <div class="col"><p th:text="${solveGaussJordan.matrizA[3]}"></p></div>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <p>Vector B</p>
+                                    <div class="row align-items-start">
+                                        <div class="col"><p th:text="${solveGaussJordan.vectorB[0]}"></p></div>
+                                    </div>
+                                    <div class="row align-items-start">
+                                        <div class="col"><p th:text="${solveGaussJordan.vectorB[1]}"></p></div>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <p>Solución(X)</p>
+                                    <div class="row align-items-start">
+                                        <div class="col"><p th:text="${solveGaussJordan.vectorX[0]}"></p></div>
+                                    </div>
+                                    <div class="row align-items-start">
+                                        <div class="col"><p th:text="${solveGaussJordan.vectorX[1]}"></p></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Para MN=3 -->
+                        <div class="col" th:if="${solveGaussJordan.MN}==3">
+                            <div class="row align-items-start">
+                                <div class="col">
+                                    <p>MATRIZ A</p>
+                                    <div class="row align-items-start">
+                                        <div class="col"><p th:text="${solveGaussJordan.matrizA[0]}"></p></div>
+                                        <div class="col"><p th:text="${solveGaussJordan.matrizA[1]}"></p></div>
+                                        <div class="col"><p th:text="${solveGaussJordan.matrizA[2]}"></p></div>
+                                    </div>
+                                    <div class="row align-items-start">
+                                        <div class="col"><p th:text="${solveGaussJordan.matrizA[3]}"></p></div>
+                                        <div class="col"><p th:text="${solveGaussJordan.matrizA[4]}"></p></div>
+                                        <div class="col"><p th:text="${solveGaussJordan.matrizA[5]}"></p></div>
+                                    </div>
+                                    <div class="row align-items-start">
+                                        <div class="col"><p th:text="${solveGaussJordan.matrizA[6]}"></p></div>
+                                        <div class="col"><p th:text="${solveGaussJordan.matrizA[7]}"></p></div>
+                                        <div class="col"><p th:text="${solveGaussJordan.matrizA[8]}"></p></div>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <p>Vector B</p>
+                                    <div class="row align-items-start"><div class="col"><p th:text="${solveGaussJordan.vectorB[0]}"></p></div></div>
+                                    <div class="row align-items-start"><div class="col"><p th:text="${solveGaussJordan.vectorB[1]}"></p></div></div>
+                                    <div class="row align-items-start"><div class="col"><p th:text="${solveGaussJordan.vectorB[2]}"></p></div></div>
+                                </div>
+                                <div class="col-2">
+                                    <p>Solución(X)</p>
+                                    <div class="row align-items-start"><div class="col"><p th:text="${solveGaussJordan.vectorX[0]}"></p></div></div>
+                                    <div class="row align-items-start"><div class="col"><p th:text="${solveGaussJordan.vectorX[1]}"></p></div></div>
+                                    <div class="row align-items-start"><div class="col"><p th:text="${solveGaussJordan.vectorX[2]}"></p></div></div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>                   
                 </div>
             </div>
-
-            <div class="row">
-                <div class="container text-center">
-
-                    <!-- Para MN=2 -->
-                    <div class="col" th:if="${solveGaussJordan.MN}==2">
-                        <div class="row align-items-start">
-                            <div class="col">
-                                <p>MATRIZ A</p>
-                                <div class="row align-items-start">
-                                    <div class="col"><p th:text="${solveGaussJordan.matrizA[0]}"></p></div>
-                                    <div class="col"><p th:text="${solveGaussJordan.matrizA[1]}"></p></div>
-                                </div>
-                                <div class="row align-items-start">
-                                    <div class="col"><p th:text="${solveGaussJordan.matrizA[2]}"></p></div>
-                                    <div class="col"><p th:text="${solveGaussJordan.matrizA[3]}"></p></div>
-                                </div>
-                            </div>
-                            <div class="col-2">
-                                <p>Vector B</p>
-                                <div class="row align-items-start">
-                                    <div class="col"><p th:text="${solveGaussJordan.vectorB[0]}"></p></div>
-                                </div>
-                                <div class="row align-items-start">
-                                    <div class="col"><p th:text="${solveGaussJordan.vectorB[1]}"></p></div>
-                                </div>
-                            </div>
-                            <div class="col-2">
-                                <p>Solución(X)</p>
-                                <div class="row align-items-start">
-                                    <div class="col"><p th:text="${solveGaussJordan.vectorX[0]}"></p></div>
-                                </div>
-                                <div class="row align-items-start">
-                                    <div class="col"><p th:text="${solveGaussJordan.vectorX[1]}"></p></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Para MN=3 -->
-                    <div class="col" th:if="${solveGaussJordan.MN}==3">
-                        <div class="row align-items-start">
-                            <div class="col">
-                                <p>MATRIZ A</p>
-                                <div class="row align-items-start">
-                                    <div class="col"><p th:text="${solveGaussJordan.matrizA[0]}"></p></div>
-                                    <div class="col"><p th:text="${solveGaussJordan.matrizA[1]}"></p></div>
-                                    <div class="col"><p th:text="${solveGaussJordan.matrizA[2]}"></p></div>
-                                </div>
-                                <div class="row align-items-start">
-                                    <div class="col"><p th:text="${solveGaussJordan.matrizA[3]}"></p></div>
-                                    <div class="col"><p th:text="${solveGaussJordan.matrizA[4]}"></p></div>
-                                    <div class="col"><p th:text="${solveGaussJordan.matrizA[5]}"></p></div>
-                                </div>
-                                <div class="row align-items-start">
-                                    <div class="col"><p th:text="${solveGaussJordan.matrizA[6]}"></p></div>
-                                    <div class="col"><p th:text="${solveGaussJordan.matrizA[7]}"></p></div>
-                                    <div class="col"><p th:text="${solveGaussJordan.matrizA[8]}"></p></div>
-                                </div>
-                            </div>
-                            <div class="col-2">
-                                <p>Vector B</p>
-                                <div class="row align-items-start"><div class="col"><p th:text="${solveGaussJordan.vectorB[0]}"></p></div></div>
-                                <div class="row align-items-start"><div class="col"><p th:text="${solveGaussJordan.vectorB[1]}"></p></div></div>
-                                <div class="row align-items-start"><div class="col"><p th:text="${solveGaussJordan.vectorB[2]}"></p></div></div>
-                            </div>
-                            <div class="col-2">
-                                <p>Solución(X)</p>
-                                <div class="row align-items-start"><div class="col"><p th:text="${solveGaussJordan.vectorX[0]}"></p></div></div>
-                                <div class="row align-items-start"><div class="col"><p th:text="${solveGaussJordan.vectorX[1]}"></p></div></div>
-                                <div class="row align-items-start"><div class="col"><p th:text="${solveGaussJordan.vectorX[2]}"></p></div></div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>                   
+            <div class="text-center mt-3">
+                <a href="/" class="btn btn-primary">Volver al Inicio</a>
             </div>
         </div>
-    </div>
-</body>
+    </body>
 
 </html>

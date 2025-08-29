@@ -6,9 +6,10 @@ import lombok.Data;
 
 @Data   
 public class Lagrange {
- private int n; // número de puntos
-    private ArrayList<Double> xPoints; // puntos x
-    private ArrayList<Double> yPoints; // puntos y
-    private ArrayList<Double> result; 
-    
+ private int n; 
+    private ArrayList<Double> xValues;
+    private ArrayList<Double> yValues;
+    private ArrayList<Double> lagrangeCoefficients;
+    private double resultado;
+    private double puntoEvaluar;
 }
